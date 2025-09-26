@@ -10,29 +10,50 @@ namespace SnackisAPI.Controllers;
 
 public class MemberController : ControllerBase
 {
-    private readonly IMemberService _memberService;   
+    private readonly IMemberService _memberService;
 
     public MemberController(IMemberService memberService)
     {
         _memberService = memberService;
-        
+
     }
 
-   [HttpGet]
+    [HttpGet]
     public async Task<ActionResult<List<MemberDto>>> Get()
     {
-        return Ok(await _memberService.GetAllMembersAsync());
+        var members = await _memberService.GetAllMembersAsync();
+
+        if (members == null)
+        {
+            return StatusCode(500);
+        }
+
+        return Ok();
     }
 
     [HttpGet("{id:int}")]
     public async Task<ActionResult<List<Post>>> Get(int id)
     {
-        return Ok(await _memberService.GetAllPostsByMemberId(id));
+        var posts = await _memberService.GetAllPostsByMemberId(id);
+
+        if (posts == null)
+        {
+            return StatusCode(500);
+        }
+
+        return Ok();
     }
 
     [HttpGet("{date:datetime}")]
     public async Task<ActionResult<List<Post>>> Get(DateTime date)
     {
-        return Ok(await _memberService.GetAllPostsByDate(date));
+        var posts = await _memberService.GetAllPostsByDate(date);
+
+        if(posts == null)
+        {
+            return StatusCode(500);
+        }
+
+        return Ok();
     }
 }

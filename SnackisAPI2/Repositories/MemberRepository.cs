@@ -20,7 +20,7 @@ public class MemberRepository : IMemberRepository
         .ToListAsync();
 
     public async Task<List<Post>> GetAllPostsByDate(DateTime dateTime) => await _dbContext.Post
-        .Where(p => p.Created.Value.Date == dateTime.Date)
+        .Where(p => p.Created.Date == dateTime.Date)
         .Include(p => p.SubPosts)
         .ToListAsync();
 }

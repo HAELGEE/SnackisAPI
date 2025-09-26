@@ -9,11 +9,11 @@ public class Member
 {
     public int Id { get; set; }
 
-    public string? FirstName { get; set; }
-    public string? LastName { get; set; }   
-    public string? Birthday { get; set; }    
-    public string? UserName { get; set; }
-    public string? Email { get; set; }   
+    public string FirstName { get; set; }
+    public string LastName { get; set; }   
+    public string Birthday { get; set; }    
+    public string UserName { get; set; }
+    public string Email { get; set; }   
     public string? Password { get; set; }
     public string? PasswordValidation { get; set; }
 
@@ -41,7 +41,7 @@ public class Member
     }
     public int TotalPosts { get; set; } = 0;
     public int TotalReply { get; set; } = 0;    
-    public DateTime? RegisteryDate { get; set; } = DateTime.Now;
+    public DateTime RegisteryDate { get; set; } = DateTime.Now;
     public string ProfileImagePath { get; set; } = "/uploads/standardProfile.png";
 
 }
