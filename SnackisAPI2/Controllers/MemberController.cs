@@ -2,6 +2,7 @@
 using SnackisAPI.Services;
 using SnackisAPI.DTOs;
 using SnackisAPI.Models;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace SnackisAPI.Controllers;
 
@@ -21,11 +22,13 @@ public class MemberController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<MemberDto>>> Get()
     {
-        var members = await _memberService.GetAllMembersAsync();
-
-        if (members == null)
+        try
         {
-            return StatusCode(500);
+            var members = await _memberService.GetAllMembersAsync();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Servern ligger nere: {ex}");
         }
 
         return Ok();
@@ -34,11 +37,13 @@ public class MemberController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<ActionResult<List<Post>>> Get(int id)
     {
-        var posts = await _memberService.GetAllPostsByMemberId(id);
-
-        if (posts == null)
+        try
         {
-            return StatusCode(500);
+            var posts = await _memberService.GetAllPostsByMemberId(id);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Servern ligger nere: {ex}");
         }
 
         return Ok();
@@ -47,11 +52,13 @@ public class MemberController : ControllerBase
     [HttpGet("{date:datetime}")]
     public async Task<ActionResult<List<Post>>> Get(DateTime date)
     {
-        var posts = await _memberService.GetAllPostsByDate(date);
-
-        if(posts == null)
+        try
         {
-            return StatusCode(500);
+            var posts = await _memberService.GetAllPostsByDate(date);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Servern ligger nere: {ex}");
         }
 
         return Ok();
