@@ -13,8 +13,8 @@ public class SubPost
 
 
     // DB connections
-    public int PostId { get; set; }
-    public int MemberId { get; set; }
+    public int? PostId { get; set; }
+    public int? MemberId { get; set; }
     public Member? Member { get; set; }
 
 }
