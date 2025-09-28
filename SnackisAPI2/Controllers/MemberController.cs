@@ -25,42 +25,88 @@ public class MemberController : ControllerBase
         try
         {
             var members = await _memberService.GetAllMembersAsync();
+            return Ok(members);
+
         }
         catch (Exception ex)
         {
             return StatusCode(500, $"Servern ligger nere: {ex}");
         }
 
-        return Ok();
     }
 
     [HttpGet("{id:int}")]
     public async Task<ActionResult<List<Post>>> Get(int id)
     {
+        var allUsers = await _memberService.GetAllMembersAsync();
+        bool userFound = false;
+        if (allUsers != null)
+        {
+            foreach (var user in allUsers)
+            {
+                if (user.Id == id)
+                {
+                    userFound = true; break;
+                }
+            }
+        }
+
+        if (!userFound)
+        {
+            return StatusCode(400, $"Inget id hittad med id: {id}");
+        }
+
         try
         {
             var posts = await _memberService.GetAllPostsByMemberId(id);
+            return Ok(posts);
         }
         catch (Exception ex)
         {
             return StatusCode(500, $"Servern ligger nere: {ex}");
         }
 
-        return Ok();
+            
+
     }
 
     [HttpGet("{date:datetime}")]
     public async Task<ActionResult<List<Post>>> Get(DateTime date)
     {
+
         try
         {
             var posts = await _memberService.GetAllPostsByDate(date);
+
+            var dateFound = false;
+
+            if (posts != null)
+            {
+
+                foreach (var post in posts)
+                {
+                    foreach (var subPost in post.SubPosts)
+                    {
+                        if (post.Created.Date == date.Date || subPost.Created.Date == date.Date)
+                        {
+                            dateFound = true; break;
+                        }
+                    }
+                }
+            }
+
+            if (!dateFound)
+            {
+                return StatusCode(400, $"Inget skapat under detta datumet: {date}");
+            }
+
+            return Ok(posts);
+
         }
         catch (Exception ex)
         {
             return StatusCode(500, $"Servern ligger nere: {ex}");
         }
 
-        return Ok();
     }
 }
